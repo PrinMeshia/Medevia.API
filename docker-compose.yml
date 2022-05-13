@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  medevia.api.ui:
+    image: ${DOCKER_REGISTRY-}medeviaapiui
+    build:
+      context: .
+      dockerfile: Medevia.API.UI/Dockerfile
+    depends_on: 
+        - sql.data
+  sql.data:
+    image: mcr.microsoft.com/mssql/server:latest
+    environment:
+      SA_PASSWORD: "SqlServerR00t"
+      ACCEPT_EULA: "Y"
+    volumes:
+      - sqlvolume:/var/opt/mssql 
+    ports:
+      - "1433:1433"
+
+volumes:
+  sqlvolume:
+    driver: local
